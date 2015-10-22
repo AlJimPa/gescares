@@ -1,0 +1,77 @@
+	<form method="get" action="/dishes">
+		<input type="text" name="search" />
+        <input type="submit" value="Buscar plato" />
+		<!-- < % if (session.userIsManager) { %> -->
+	    <a href="/dishes/new"><button type="button">Crear Plato</button></a>
+        <!-- < % } %> -->
+	</form>
+	<table>
+		<tr>
+			<th>Plato</th>
+			<th>Tipo</th>
+			<th>Categoría</th>
+		</tr>
+<!-- TMP plain data, replace with model data -->
+		<tr>
+			<td>
+				<a href="dishes/1">Canelones a la boloñesa</a>
+			</td>
+			<td>Primer plato</td>
+			<td>Pasta, carne</td>
+		</tr>
+		<tr>
+			<td>
+				<a href="dishes/2">Arroz a la cubana</a>
+			</td>
+			<td>Primer plato</td>
+			<td>Arroz</td>
+		</tr>
+		<tr>
+			<td>
+				<a href="dishes/3">Pescado a la plancha</a>
+			</td>
+			<td>Segundo plato</td>
+			<td>Pescado, plancha</td>
+		</tr>
+		<tr>
+			<td>
+				<a href="dishes/4">Pollo asado</a>
+			</td>
+			<td>Segundo plato</td>
+			<td>Carne, asado</td>
+		</tr>
+		<tr>
+			<td>
+				<a href="dishes/5">Tarta de requesón</a>
+			</td>
+			<td>Postre</td>
+			<td>Frío</td>
+		</tr>
+
+<!-- /TMP -->
+<!-- TODO get model data from controller
+		< % var i; for (i=0; i < dishes.length; i++) { %>
+		<tr>
+			<td>
+				<a href="dishes/< %= dishes[i].id %>">< %= dishes[i].dish %></a>
+			</td>
+			<td>
+				< %= dishes[i].Type.text %>
+			</td>
+			< % if (session.userIsManager) { %>
+			<td>
+				<a href="dishes/< %= dishes[i].id %>/edit">
+					<button>Editar</button>
+				</a>
+			</td>
+			< % } %>
+		</tr>
+		< % } %>
+-->
+	</table>
+<!--	
+	< % if (session.userIsManager) { %>
+	<a href="/dishes/new"><button type="button">Crear Plato</button></a>
+	< % } %>
+-->
+

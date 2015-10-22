@@ -1,0 +1,136 @@
+<!-- 
+Base: https://developer.mozilla.org/en-US/docs/Using_files_from_web_applications
+Gallery management - upload local files to server
+Discarded, as each time the file input updates, it drops old files.
+fileInput.files values are read only.
+
+other files affected:
+
+-routes.index.js
+#initial region
+//multer - to prevent duplicate namefiles, rename with the date?
+var multer = require('multer');
+var storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, './public/images/')
+  },
+  filename: function (req, file, cb) {
+    cb(null, file.originalname + '-' + Date.now())
+  }
+});
+var upload = multer({ storage: storage });
+#dish region
+//router.post('/dishes/create', upload.single('dish[Image]'), dishController.create);
+//router.post('/dishes/create', upload.array('dish[Image]'), dishController.create);
+
+-new.ejs, 
+add attribute 'enctype="multipart/form-data"' on form
+
+
+-->
+
+		<div id="gallery">
+			<input id="fileInput" name="dish[Image]" type="file" accept="image/*" 
+				   multiple="true" style="display:none" onchange="handleFiles(this.files)">
+			<a href="#" id="fileSelect">Añadir imágenes</a>
+			<div id="thumbnailList"></div>
+			<div>
+				<img id="imagePreview" style="display:none" />
+				<button type="button" id="buttonModifyImage" style="display:none">
+					Modificar imágen
+				</button>
+				<button type="button" id="buttonDeleteImage" style="display:none" onclick="deleteImage()">
+					Borrar imágen
+				</button>
+			</div>
+			<script>
+				var fileInput = document.getElementById('fileInput');
+				var fileSelect = document.getElementById('fileSelect');
+				var fileList = null;
+				var thumbnailList = document.getElementById('thumbnailList');
+				var imagePreview = document.getElementById('imagePreview');
+				var selectedImage = null;
+				var eventTarget = null; //discern new from modify
+				function fileInputTrigger(e) {
+					if (fileInput) {
+						eventTarget = e.target;
+						fileInput.click();
+					}
+					e.preventDefault(); // prevent navigation to '#'
+				};
+				fileSelect.addEventListener('click', fileInputTrigger, false);
+				var btnModify = document.getElementById('buttonModifyImage');
+				btnModify.addEventListener('click', fileInputTrigger, false);
+				function toggleImageButtons(activate){
+					var btnDelete = document.getElementById('buttonDeleteImage');
+					if (activate) {
+						btnModify.style.display = 'inline';
+						btnDelete.style.display = 'inline';
+					} else {
+						btnModify.style.display = 'none';
+						btnDelete.style.display = 'none';
+					}
+				}
+				function handleFiles(files){
+					if (files.length) {
+						if (eventTarget === btnModify) {
+							var img = loadThumbnail(files[0]);
+							if (img !== null) {
+								imagePreview.src = img.src;
+								thumbnailList.replaceChild(img, selectedImage);
+								img.style.borderStyle = 'solid';
+								selectedImage = img;
+							}
+						} else {							
+							imagePreview.display = 'none';
+							selectedImage = null;
+							for (var i = 0; i < files.length; i++) {
+								var img = loadThumbnail(files[i]);
+								if (img !== null)
+									thumbnailList.appendChild(img);
+							}
+						}
+					}
+				};
+				function loadThumbnail(file) {
+					var imageType = /^image\//;
+					if (!imageType.test(file.type)) {
+						return null;
+					}
+					var img = document.createElement('img');
+					img.src = window.URL.createObjectURL(file);
+					//[TODO move to CSS]
+					img.height = 60;
+					img.width = 60;
+					img.style.margin = '8px';
+					img.style.borderStyle = 'hidden';
+					img.style.borderColor = 'red';
+					//[/TODO move to CSS]
+					img.onload = function(){
+						window.URL.revokeObjectURL(file);				
+					};
+					img.addEventListener('click', imageClickHandler);
+					return img;
+				};
+				function imageClickHandler(e) {
+					var img = e.target;
+					var imgNodes = img.parentElement.childNodes;
+					for (var tmp = 0; tmp < imgNodes.length; tmp++){
+						imgNodes[tmp].style.borderStyle = 'hidden';
+					}
+					img.style.borderStyle = 'solid';
+					if (selectedImage === null)
+						toggleImageButtons(true);
+					selectedImage = img;
+					imagePreview.style.display = 'block';
+					imagePreview.src=img.src;
+					
+				};
+				function deleteImage() {
+					thumbnailList.removeChild(selectedImage);
+					selectedImage = null;
+					toggleImageButtons(false);
+					imagePreview.style.display = 'none';
+				};
+			</script>
+		</div>
