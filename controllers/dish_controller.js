@@ -1,5 +1,9 @@
 //GET /dishes
 exports.index = function(req, res) {
+	/*
+	var userAgent = req['headers']['user-agent'];
+	var isMobile = userAgent.match(/(iPhone|iPod|iPad|Android|BlackBerry)/);
+	*/
 	//TODO get dish list from database
 	res.render('dishes/index.ejs', {errors: []});
 };

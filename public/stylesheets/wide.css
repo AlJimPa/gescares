@@ -1,0 +1,38 @@
+.table {
+  display: table;
+}
+
+.tableHeaderRow{
+  background-color: black;
+  display: table-row;
+  font-weight: bold;
+  text-align: center;
+}
+.tableBodyRow {
+  background-color: CadetBlue;
+  display: table-row;
+}
+.tableHeaderRow > div {
+  background-color: inherit;
+  display: table-cell;
+}
+
+.tableBodyRow > div, .bodyCell {
+  background-color: inherit;
+  border-color: DarkOliveGreen;
+  border-style: solid;
+  border-width: 1px;
+  display: table-cell;
+}
+
+.tableBodyRow > img {
+  display: none;
+}
+
+.oddRow {
+  background-color: SteelBlue;
+}
+
+.selectedRow, #n1 > span > a:hover, input:hover, button:hover {
+  background-color: #663399; /* Coral;*/
+}

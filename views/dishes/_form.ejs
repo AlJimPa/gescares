@@ -24,145 +24,159 @@
 		</select>
 		<!-- <script>document.getElementById("selectType").value="< %= dish.TypeId %>"</script>-->
 		<script>document.getElementById("selectType").value="1"</script>
-		<label for="selectCategories" class="rem">Categorias:</label>
-		<select name="dish[Categories]" id="selectCategories" multiple="true">
-		<!-- 
-			< % for (var c in categories) { %>
-			<option value="< %=categories[c].id %>">< %= categories[c].text %></option>
-			< % } %>
-		-->
-			<option value="101">Carne</option>
-			<option value="102">Pescado</option>
-			<option value="3">Caldo</option>
-			<option value="4">Vegetariano</option>
-			<option value="5">Apto para celíacos</option>
-			<option value="6">Apto para diabéticos</option>
-			<option value="7">Pasta</option>
-			<option value="8">Arroz</option>
-			<option value="9">Plancha</option>
-			<option value="10">Asado</option>
-			<option value="11">Frío</option>
-			<option value="12">Caliente</option>
-		</select>
-		<!-- 
-		<script>
-			< % 
-			var currentValue;
-			var i; 
-			for (i=0; i < dishes.length; i++) {
-				currentValue = document.getElementById("selectCategories")[i];
-				if (dish.categories.indexof(currentValue) !== -1){ %>
-					document.getElementById("selectCategories")[i].selected = true;
-				< % } 
-			} %>
-		-->
-		<div id="divComponents">
-			<label for="components" class="rem" style="display: block">Componentes</label>
-			<fieldset id="components">
-				<input list="componentList" name="componentInputList" id="componentInputList">
-				<datalist id="componentList">
-					<!--TODO get component list from controller -->
-					<option value="Pasta">
-					<option value="Carne picada de ternera">
-					<option value="Tomate">
-					<option value="Polvo de setas">
-					<option value="Nuez moscada">
-					<option value="Orégano">
-					<option value="Albahaca">
-					<option value="Sal">
-					<option value="Pollo">
-					<option value="Limón">
-					<option value="Tomillo">
-					<option value="Romero">
-					<option value="Cebolla">
-					<option value="Puerro">
-					<option value="Pimiento">					
-				</datalist>
-				<button type="button" id="buttonAddComponent" 
-						onclick="addOption(
-							document.getElementById('selectComponents'), document.getElementById('componentInputList').value)">
-					Añadir
-				</button>
-				<br>
-				<select name="dish[Component]" id="selectComponents" 
-						size="5" multiple="true">
+		<div id="divMultiComponents">
+			<div class="multiSelectContainer">
+				<label for="selectCategories" class="rem blockLabel">Categorias</label>
+				<select name="dish[Categories]" id="selectCategories" class="bordered" multiple="true">
+				<!-- 
+					< % for (var c in categories) { %>
+					<option value="< %=categories[c].id %>">< %= categories[c].text %></option>
+					< % } %>
+				-->
+					<option value="101">Carne</option>
+					<option value="102">Pescado</option>
+					<option value="3">Caldo</option>
+					<option value="4">Vegetariano</option>
+					<option value="5">Apto para celíacos</option>
+					<option value="6">Apto para diabéticos</option>
+					<option value="7">Pasta</option>
+					<option value="8">Arroz</option>
+					<option value="9">Plancha</option>
+					<option value="10">Asado</option>
+					<option value="11">Frío</option>
+					<option value="12">Caliente</option>
 				</select>
-				<button type="button" id="buttonRemoveComponent" 
-						onclick="removeOptions(document.getElementById('selectComponents'))">
-						Eliminar
-				</button>
-			</fieldset>
-		</div>
-		<div id="divAllergenics">
-			<label for="allergenics" class="rem" style="display: block">Alérgenos</label>
-			<fieldset id="allergenics">
-				<input list="allergenicList" name="allergenicInputList" id="allergenicInputList">
-				<datalist id="allergenicList">
-					<!--TODO get allergenic list from controller -->
-					<option value="Polvo de setas">
-					<option value="Nuez moscada">
-					<option value="Orégano">
-					<option value="Albahaca">
-					<option value="Tomillo">
-					<option value="Romero">
-					<option value="Pimiento">
-				</datalist>
-				<button type="button" id="buttonAddAllergenic" 
-						onclick="addOption(
-							document.getElementById('selectAllergenics'),
-							document.getElementById('allergenicInputList').value)">
-					Añadir
-				</button>
-				<br>
-				<select name="dish[Allergenic]" id="selectAllergenics" 
-						size="5" multiple="true">
-				</select>
-				<button type="button" id="buttonRemoveAllergenic" 
-						onclick="removeOptions(document.getElementById('selectAllergenics'))">
-					Eliminar
-				</button>
-			</fieldset>
-		</div>
-		<script>
-			function addOption(select, text){
-				var option = document.createElement('option');
-				option.text = text;
-				option.value = text;
-				select.add(option);
-			};
-			function removeOptions(select){
-				var array = [];
-				var i;
-				for (i=0; i < select.length; i++){
-					if (select[i].selected){
-						array.push(select[i].index);
-					}
-				}
-				for (i=array.length -1; i >= 0; i--){
-					select.remove(array[i]);
-				}
-			};
-		</script>
-		<div id="divPricing">
-			<div id="pricingHeader">
-				<span class="pricingCol1">Concepto</span>
-				<span class="pricingCol2">Importe</span>
-				<span class="pricingCol3">Moneda</span>
+				<!-- 
+				<script>
+					< % 
+					var currentValue;
+					var i; 
+					for (i=0; i < dishes.length; i++) {
+						currentValue = document.getElementById("selectCategories")[i];
+						if (dish.categories.indexof(currentValue) !== -1){ %>
+							document.getElementById("selectCategories")[i].selected = true;
+						< % } 
+					} %>
+				-->
 			</div>
-			<div id="pricingBody"></div>			
-			<button type="button" id="buttonAddPricingRow" onclick="addPricingRow();">
-				Añadir precio
-			</button>
+			<div class="multiSelectContainer">
+				<label for="components" class="rem blockLabel">Componentes</label>
+				<fieldset id="components" class="bordered">
+					<input list="componentList" name="componentInputList" id="componentInputList" class="multiSelectInput">
+					<datalist id="componentList">
+						<!--TODO get component list from controller -->
+						<option value="Pasta">
+						<option value="Carne picada de ternera">
+						<option value="Tomate">
+						<option value="Polvo de setas">
+						<option value="Nuez moscada">
+						<option value="Orégano">
+						<option value="Albahaca">
+						<option value="Sal">
+						<option value="Pollo">
+						<option value="Limón">
+						<option value="Tomillo">
+						<option value="Romero">
+						<option value="Cebolla">
+						<option value="Puerro">
+						<option value="Pimiento">					
+					</datalist>
+					<button type="button" class="button multiSelectAddButton"
+							onclick="addOption(
+								document.getElementById('selectComponents'), document.getElementById('componentInputList').value)">
+						Añadir
+					</button>
+					<select name="dish[Component]" id="selectComponents" class="multiSelectSelect" size="5" multiple="true">
+					</select>
+					<button type="button" class="button multiSelectRemoveButton"
+							onclick="removeOptions(document.getElementById('selectComponents'))">
+							Eliminar
+					</button>
+				</fieldset>
+			</div>
+			<div class="multiSelectContainer">
+				<label for="allergenics" class="rem blockLabel">Alérgenos</label>
+				<fieldset id="allergenics" class="bordered">
+					<input list="allergenicList" name="allergenicInputList" id="allergenicInputList" class="multiSelectInput">
+					<datalist id="allergenicList">
+						<!--TODO get allergenic list from controller -->
+						<option value="Polvo de setas">
+						<option value="Nuez moscada">
+						<option value="Orégano">
+						<option value="Albahaca">
+						<option value="Tomillo">
+						<option value="Romero">
+						<option value="Pimiento">
+					</datalist>
+					<button type="button" class="button multiSelectAddButton"
+							onclick="addOption(
+								document.getElementById('selectAllergenics'),
+								document.getElementById('allergenicInputList').value)">
+						Añadir
+					</button>
+					<br>
+					<select name="dish[Allergenic]" id="selectAllergenics" class="multiSelectSelect" size="5" multiple="true">
+					</select>
+					<button type="button" class="button multiSelectRemoveButton"
+							onclick="removeOptions(document.getElementById('selectAllergenics'))">
+						Eliminar
+					</button>
+				</fieldset>
+			</div>
+			<script>
+				function addOption(select, text){
+					var option = document.createElement('option');
+					option.text = text;
+					option.value = text;
+					select.add(option);
+				};
+				function removeOptions(select){
+					var array = [];
+					var i;
+					for (i=0; i < select.length; i++){
+						if (select[i].selected){
+							array.push(select[i].index);
+						}
+					}
+					for (i=array.length -1; i >= 0; i--){
+						select.remove(array[i]);
+					}
+				};
+			</script>
+		</div>
+		<div id="divPricing">
+			<label for="pricing" class="rem blockLabel">Precios</label>
+			<fieldset id="pricing" class="bordered">
+				<div id="pricingTable" class="table">
+					<div id="pricingHeader" class="tableHeaderRow">
+						<div>Concepto</div>
+						<div>Importe</div>
+						<div>Moneda</div>
+						<div>Acciones</div>
+					</div>
+				</div>
+				<button type="button" id="buttonAddPricingRow" class="button" onclick="addPricingRow();">
+					Añadir precio
+				</button>
+			</fieldset>
 		</div>
 		<script>
 			//TODO new function to load from controller; add an alert on delete button
 			var priceRowNumber = priceRowNumber || 0;
 			function addPricingRow(){
-				var pricingBody = document.getElementById('pricingBody');
-				//var rowNumber = pricingBody.childElementCount;
-				var div = document.createElement('DIV');
-				div.id = 'pricingRow' + priceRowNumber;
-				pricingBody.appendChild(div);
+				var pricingTable = document.getElementById('pricingTable');
+				//var rowNumber = pricingTable.childElementCount;
+				var tableBodyRowDiv = document.createElement('DIV');
+				tableBodyRowDiv.id = 'pricingRow' + priceRowNumber;
+				tableBodyRowDiv.setAttribute('class', 'tableBodyRow');
+				pricingTable.appendChild(tableBodyRowDiv);
+				//TODO - move this function to a common js file?
+				function insertBodyCell(tableBodyRowDiv, child){
+					var div = document.createElement('DIV');
+					div.setAttribute('class', 'tableBodyRow');
+					div.appendChild(child);
+					tableBodyRowDiv.appendChild(div);
+				}
 				var strPrice = 'dish[Price][' + priceRowNumber + ']';
 				/* //TODO hidden attribute for updates (contains DB id); null on new?
 				*/
@@ -170,36 +184,40 @@
 				var conceptInput = document.createElement('INPUT');
 				conceptInput.setAttribute('type', 'text');
 				conceptInput.setAttribute('name', strPrice + '.priceConcept');
-				div.appendChild(conceptInput);
+				insertBodyCell(tableBodyRowDiv, conceptInput);
 				//priceInput
 				var priceInput = document.createElement('INPUT');
 				priceInput.setAttribute('type', 'text');
 				priceInput.setAttribute('name', strPrice + '.price');
-				div.appendChild(priceInput);
+				insertBodyCell(tableBodyRowDiv, priceInput);
 				//currencyInput
 				var currencyInput = document.createElement('INPUT');
 				currencyInput.setAttribute('type', 'text');
 				currencyInput.setAttribute('name', strPrice + '.priceCurrency');
-				div.appendChild(currencyInput);
+				insertBodyCell(tableBodyRowDiv, currencyInput);
 				//deletePrizeButton
-				var deletePrizeButton = document.createElement('BUTTON');
-				deletePrizeButton.setAttribute('type', 'button');
-				deletePrizeButton.appendChild(document.createTextNode('Eliminar'));
-				deletePrizeButton.addEventListener('click', function(){
-					pricingBody.removeChild(div);
+				var deletePriceButton = document.createElement('BUTTON');
+				deletePriceButton.setAttribute('type', 'button');
+				deletePriceButton.setAttribute('class', 'button');
+				deletePriceButton.appendChild(document.createTextNode('Eliminar'));
+				deletePriceButton.addEventListener('click', function(){
+					pricingTable.removeChild(tableBodyRowDiv);
 				});
-				div.appendChild(deletePrizeButton);
+				insertBodyCell(tableBodyRowDiv, deletePriceButton);
+				//increase counter
 				priceRowNumber++;
 			};
 		</script>
 		<div id="divGallery">
-			<label for="gallery" class="rem" style="display: block">Galería</label>
-			<fieldset id="gallery">
-				<div id="divGalleryContent"></div>
-				<button type="button" id="buttonAddImage" 
-					    onclick="addImage(document.getElementById('divGalleryContent'));">
-					Añadir imágen
-				</button>
+			<label for="gallery" class="rem blockLabel">Galería</label>
+			<fieldset id="gallery" class="bordered">
+				<div class="zeroBox">
+					<div id="divGalleryContent"></div>
+					<button type="button" id="buttonAddImage" class="button"
+							onclick="addImage(document.getElementById('divGalleryContent'));">
+						Añadir imágen
+					</button>
+				</div>
 				<img id="imagePreview" style="display:none" />
 			</fieldset>
 		</div>
@@ -208,16 +226,10 @@
 			function addImage(parent){
 				var imagePreview = document.getElementById('imagePreview');
 				var divImage = document.createElement('DIV');
+				divImage.setAttribute('class', 'bordered');
 				parent.appendChild(divImage);
 				var imgThumbnail = document.createElement('IMG');
 				imgThumbnail.setAttribute('class', 'imageThumbnail');
-				//[TODO move to CSS]
-				imgThumbnail.setAttribute('height', 24);
-				imgThumbnail.setAttribute('width', 24);
-				imgThumbnail.style.margin = '4px';
-				imgThumbnail.style.borderStyle = 'hidden';
-				imgThumbnail.style.borderColor = 'red';
-				//[/TODO move to CSS]
 				imgThumbnail.style.display = 'none';
 				divImage.appendChild(imgThumbnail);
 				var imgInput = document.createElement('INPUT');
@@ -226,6 +238,7 @@
 				divImage.appendChild(imgInput);
 				var imgDeleteButton = document.createElement('BUTTON');
 				imgDeleteButton.setAttribute('type', 'button');
+				imgDeleteButton.setAttribute('class', 'button');
 				imgDeleteButton.appendChild(document.createTextNode('Borrar'));
 				divImage.appendChild(imgDeleteButton);
 				//event listeners
@@ -243,9 +256,9 @@
 				};
 				imgThumbnail.onclick = function(){
 					for (var tmp = 0; tmp < parent.childElementCount; tmp++) {
-						parent.childNodes[tmp].style.backgroundColor = 'initial';
+						parent.childNodes[tmp].classList.remove('selectedElement');
 					};
-					divImage.style.backgroundColor = 'lightgrey';
+					divImage.classList.add('selectedElement');
 					imagePreview.src = imgThumbnail.src;
 					imagePreview.style.display = 'block';
 				};
@@ -256,9 +269,11 @@
 			};
 		</script>
 		<div display="block">
-			<a href="/dishes"><button type="button" name="Cancel">Cancelar</button></a>
+			<a href="/dishes">
+				<button type="button" class="button" name="Cancel">Cancelar</button>
+			</a>
 			<!-- <input type="submit" name = "Salvar">Salvar</input> -->
-			<button type="button" name="Salvar" onclick="submitForm()">Salvar</button>
+			<button type="button" class="button" name="Salvar" onclick="submitForm()">Salvar</button>
 			
 		</div>
 		<script>

@@ -1,74 +1,129 @@
 	<form method="get" action="/dishes">
 		<input type="text" name="search" />
-        <input type="submit" value="Buscar plato" />
+        <input type="submit" value="Buscar plato" class="button" />
 		<!-- < % if (session.userIsManager) { %> -->
-	    <a href="/dishes/new"><button type="button">Crear Plato</button></a>
+	    <a href="/dishes/new"><button type="button" class="button">Crear Plato</button></a>
         <!-- < % } %> -->
 	</form>
-	<table>
-		<tr>
-			<th>Plato</th>
-			<th>Tipo</th>
-			<th>Categoría</th>
-		</tr>
+	<div class="table">
+		<div class="tableHeaderRow">
+			<div>Plato</div>
+			<div>Tipo</div>
+			<div>Categoría</div>
+		</div>
 <!-- TMP plain data, replace with model data -->
-		<tr>
-			<td>
+		<div class="tableBodyRow">
+			<div class="dishName">
 				<a href="dishes/1">Canelones a la boloñesa</a>
-			</td>
-			<td>Primer plato</td>
-			<td>Pasta, carne</td>
-		</tr>
-		<tr>
-			<td>
+			</div>
+			<img src="https://farm9.staticflickr.com/8078/8439580201_5a78f9137b_k.jpg" alt="Canelons">
+			<div>Primer plato</div>
+			<div>Pasta, carne</div>
+		</div>
+		<div class="tableBodyRow">
+			<div class="dishName">
 				<a href="dishes/2">Arroz a la cubana</a>
-			</td>
-			<td>Primer plato</td>
-			<td>Arroz</td>
-		</tr>
-		<tr>
-			<td>
+			</div>
+			<img src="noImage.jpg" alt="sinImagen">
+			<div>Primer plato</div>
+			<div>Arroz</div>
+		</div>
+		<div class="tableBodyRow">
+			<div class="dishName">
 				<a href="dishes/3">Pescado a la plancha</a>
-			</td>
-			<td>Segundo plato</td>
-			<td>Pescado, plancha</td>
-		</tr>
-		<tr>
-			<td>
+			</div>
+			<img src="noImage.jpg" alt="sinImagen">
+			<div>Segundo plato</div>
+			<div>Pescado, plancha</div>
+		</div>
+		<div class="tableBodyRow">
+			<div class="dishName">
 				<a href="dishes/4">Pollo asado</a>
-			</td>
-			<td>Segundo plato</td>
-			<td>Carne, asado</td>
-		</tr>
-		<tr>
-			<td>
+			</div>
+			<img src="https://farm4.staticflickr.com/3552/3324946746_b7fe4105dc_b.jpg" alt="pollo asado con verdura salteada">
+			<div>Segundo plato</div>
+			<div>Carne, asado</div>
+		</div>
+		<div class="tableBodyRow">
+			<div class="dishName">
 				<a href="dishes/5">Tarta de requesón</a>
-			</td>
-			<td>Postre</td>
-			<td>Frío</td>
-		</tr>
+			</div>
+			<img src="noImage.jpg" alt="sinImagen">
+			<div>Postre</div>
+			<div>Frío</div>
+		</div>
 
 <!-- /TMP -->
 <!-- TODO get model data from controller
 		< % var i; for (i=0; i < dishes.length; i++) { %>
-		<tr>
-			<td>
+		<div class="tableBodyRow">
+			<div class="dishName">
 				<a href="dishes/< %= dishes[i].id %>">< %= dishes[i].dish %></a>
-			</td>
-			<td>
+			</div>
+			<img src=< %= dishes[i].foto %> alt="foto" />
+			<div>
 				< %= dishes[i].Type.text %>
-			</td>
+			</div>
+			<div>
+				< %= dishes[i].Categories.text %>
+			</div>
 			< % if (session.userIsManager) { %>
-			<td>
+			<div>
 				<a href="dishes/< %= dishes[i].id %>/edit">
 					<button>Editar</button>
 				</a>
-			</td>
+			</div>
 			< % } %>
-		</tr>
+		</div>
 		< % } %>
 -->
-	</table>
+	</div>
+	<script>
+		var contentRows = document.getElementsByClassName('tableBodyRow');
+		for (var i = 0; i < contentRows.length; i++) {
+			//disable links and use onclick event listener on the whole row
+			//set 'div' text with 'a' text; if js is not enabled, link will be still there
+			var dishCell = contentRows[i].children[0];
+			dishCell.childNodes[0].textContent = dishCell.children[0].text;
+			dishCell.children[0].style.display = 'none';
+			//alternate colors between rows
+			if ((i % 2) === 0){
+				contentRows[i].classList.add('oddRow');
+			}
+			//append event listeners
+			contentRows[i].addEventListener('mouseover', updateRowBackground);
+			contentRows[i].addEventListener('mouseout', updateRowBackground);
+			contentRows[i].addEventListener('click', triggerLinkClick);
+		}
+		function _getContainingRow(e){
+			var tmp = e.target;
+			while (tmp !== null && tmp.classList[0] !== 'tableBodyRow'){
+				tmp = tmp.parentElement;
+			}
+			if (tmp === null)
+				alert(tmp + ' does not have a tableBodyRow ancestor!');
+			return tmp;
+		}
+		function updateRowBackground(e){
+			var row = _getContainingRow(e);
+			if (row !== null){
+				if (e.type === 'mouseover')
+					row.classList.add('selectedRow');
+				else if (e.type === 'mouseout')
+					row.classList.remove('selectedRow');
+			}
+		};
+		function triggerLinkClick(e){
+			var row = _getContainingRow(e);
+			if (row !== null){
+				var a = row.getElementsByTagName('a');
+				if (a !== null && a.length > 0){
+					//a[0].click(); //android native browser doesn't handle click?
+					window.location.replace(a[0].href);//however, this will make back button not reliable
+				}
+			}
+		};
+	</script>
 <!--	
 	< % if (session.userIsManager) { %>
 	<a href="/dishes/new"><button type="button">Crear Plato</button></a>

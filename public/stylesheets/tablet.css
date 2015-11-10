@@ -1,0 +1,61 @@
+body {
+  font-size: 16px;
+}
+
+#page-wrap > header {
+  display: none;
+}
+
+#page-wrap > nav {
+  font-size: 20px;
+}
+.table {
+  display: block;
+}
+
+.tableHeaderRow{
+  display:none;
+}
+.tableBodyRow {
+  background-color: SteelBlue;
+  border-color: black;
+  border-style: solid;
+  display: inline-block;
+}
+
+.tableHeaderRow > div {
+  background-color: inherit;
+  display: none;
+}
+
+.tableBodyRow > .dishName {
+  font-weight: bold;
+  text-align: center;
+}
+
+.tableBodyRow > div {
+  border-style: none;
+  display: block;
+  padding: 0px;
+  text-align: center;
+}
+
+.tableBodyRow > div > a {
+}
+.tableBodyRow > img {
+  height: 90px;
+  width: 160px;
+  display: block;
+  margin: auto;
+  text-align: center;
+  color: red;
+}
+/*
+.oddRow {
+  background-color: SteelBlue;
+}
+
+.selectedRow {
+  background-color: Coral;
+}
+*/

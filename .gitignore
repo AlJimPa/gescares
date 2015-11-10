@@ -1,3 +1,6 @@
 node_modules
 npm-debug.log
 public/images/*
+public/javascripts/touch.js
+public/javascripts/zepto.min.js
+public/licenses/MIT-LICENSE_zepto
