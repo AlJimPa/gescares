@@ -59,7 +59,7 @@
 	</nav>
 	<section class="main" id="s1">
 		<% if (typeof errors !== 'undefined' && errors.length) { %>
-			<span id="ErrorMsgs">
+			<span id="error-messages">
 				Corregir errores:<br>
 				<% for (var i in errors) { %>
 					<span> <%= errors[i].message %></span><br>
@@ -70,6 +70,7 @@
 	</section>
 	<footer class="main" id="f1">
 		<a href="https://github.com/AlJimPa/Gescares" target="_blank">Proyecto en GitHub</a>
+		<p>Configuración actual: <%= global.config.env %></p>
 	</footer>
   </div>
   </body>

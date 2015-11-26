@@ -1,0 +1,14 @@
+{
+"id":1,
+"name":"Canelones a la boloñesa",
+"description":"Receta tradicional italiana, rollos de pasta rellenos de carne picada y tomate",
+"imageSource":"https://farm9.staticflickr.com/8078/8439580201_5a78f9137b_k.jpg",
+"imageDescription":"Canelons",
+"imageLink":"https://www.flickr.com/photos/rafelmiro/8439580201/",
+"type":5,
+"categories":[7, 101],
+"Components":["Pasta","Carne picada de ternera","Tomate","Polvo de setas","Nuez moscada","Orégano","Albahaca","Sal"],
+"Allergenics":["Nuez moscada","Orégano"],
+"Prices":[{"concept":"Base","price":"8.95", "currency":"EUR"},{"concept":"Añadido de tomate","price":"+0.45","currency":"EUR"}],
+"Images":[{"source":"https://farm9.staticflickr.com/8078/8439580201_5a78f9137b_k.jpg","description":"Canelons","link":"https://www.flickr.com/photos/rafelmiro/8439580201/"}]
+}

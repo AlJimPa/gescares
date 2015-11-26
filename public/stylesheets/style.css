@@ -48,7 +48,7 @@ a {
   text-decoration: none;
 }
 
-#ErrorMsgs {
+#error-Messages {
   color: #f61; 
   font-size: smaller
 }
@@ -75,7 +75,7 @@ input, select, .button {
   padding: 0px;
 }
 
-.selectedElement {
+.selected-element {
   background-color: SteelBlue; /*#663399; /* Coral;*/
 }
 
@@ -84,9 +84,18 @@ input, select, .button {
   border-style: groove;
 }
 
-.zeroBox {
+.zero-box {
   margin: 0px;
   padding: 0px;
+}
+
+.float {
+  float: left;
+}
+
+.float-clear {
+  float: left;
+  clear: both;
 }
 
 select option:checked {
@@ -112,76 +121,109 @@ select option:checked {
   height: 480px;
 }
 
-.dishCategories > ul {
+.dish-categories > ul {
   display: inline;
 }
 
-.dishGallery {
+.dish-gallery {
   clear: both;
 }
 
-.dishGallery > strong {
+.dish-gallery > strong {
   display: block;
 }
 
-.dishGallery > a > img {
+.dish-gallery > a > img {
   width: 240px; 
   height: 180px;
 }
 
 /* new/edit */
-.blockLabel {
+#description {
+  width: 40rem;
+}
+
+.block-label {
   display: block;
   text-align: center;
 }
 
 /* new/edit [#divMultiComponents] */
-.multiSelectContainer {
+#div-multi-components {
+  clear: both;
+}
+
+.multi-select-container {
   display: inline-block;
   float: left;
 }
 
 
-.multiSelectSelect{
+.multi-select-select{
   clear: both;
 }
 
-.multiSelectInput, .multiSelectSelect{
+.multi-select-input, .multi-select-select{
   float: left;
   width: 10rem;
   margin-right: 5px;
 }
 
-.multiSelectAddButton, .multiSelectRemoveButton{
+.multi-select-add-button, .multi-select-remove-button{
   margin-bottom: 3px;
   float:right;
   width: 4rem;
 }
 
-.multiSelectSelect, .multiSelectRemoveButton{
+.multi-select-select, .multi-select-remove-button{
   height: 5rem;
 }
 /* new/edit [/#divMultiComponents] */
 
 /* new/edit [divPricing]*/
-#divPricing {
+#div-pricing {
   clear: both;
 }
 
 /* new/edit [divGallery]*/
-.imageThumbnail {
+.image-thumbnail {
   border-style: hidden;
   border-color: red;
+  display: inline;
   margin: 2px;
-  height: 24px;
-  width: 24px;
-  vertical-align: middle;
+  height: 48px;
+  width: 48px;
+  /* vertical-align: middle; */
 }
 
 #gallery > * {
   float: left;
 }
 
-#divGalleryContent > div {
+#div-gallery-content > div {
   padding: 0px;
+}
+
+#div-gallery-content > div > * {
+    display: inline-block;
+}
+
+#div-gallery-content > div > .button {
+  padding-top: 24px;
+  padding-bottom: 24px;
+  vertical-align: top;
+  margin-top: 8px;
+}
+
+.image-fields * {
+	padding: 1px;
+}
+
+.image-fields > div > label {
+  width: 100px;
+  display: inline-block;
+}
+
+#imagePreview{
+    max-width:50%;
 }

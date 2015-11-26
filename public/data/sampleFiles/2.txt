@@ -1,0 +1,14 @@
+{
+"id":2,
+"name":"Arroz a la cubana",
+"description":"Dummy",
+"imageSource":"Dummy",
+"imageDescription":"Dummy",
+"imageLink":"Dummy",
+"type":5,
+"categories":[8],
+"Components":[],
+"Allergenics":[],
+"Prices":[],
+"Images":[]
+}

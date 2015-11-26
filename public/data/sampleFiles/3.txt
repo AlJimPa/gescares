@@ -1,0 +1,14 @@
+{
+"id":3,
+"name":"Pescado a la plancha",
+"description":"Dummy",
+"imageSource":"Dummy",
+"imageDescription":"Dummy",
+"imageLink":"Dummy",
+"type":6,
+"categories":[102, 9],
+"Components":[],
+"Allergenics":[],
+"Prices":[],
+"Images":[]
+}

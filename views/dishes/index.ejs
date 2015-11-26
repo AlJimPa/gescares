@@ -11,72 +11,34 @@
 			<div>Tipo</div>
 			<div>Categoría</div>
 		</div>
-<!-- TMP plain data, replace with model data -->
+		<% var i; for (i=0; i < dishes.length; i++) { %>
 		<div class="tableBodyRow">
 			<div class="dishName">
-				<a href="dishes/1">Canelones a la boloñesa</a>
+				<a href="dishes/<%= dishes[i].id %>"><%= dishes[i].name %></a>
 			</div>
-			<img src="https://farm9.staticflickr.com/8078/8439580201_5a78f9137b_k.jpg" alt="Canelons">
-			<div>Primer plato</div>
-			<div>Pasta, carne</div>
-		</div>
-		<div class="tableBodyRow">
-			<div class="dishName">
-				<a href="dishes/2">Arroz a la cubana</a>
-			</div>
-			<img src="noImage.jpg" alt="sinImagen">
-			<div>Primer plato</div>
-			<div>Arroz</div>
-		</div>
-		<div class="tableBodyRow">
-			<div class="dishName">
-				<a href="dishes/3">Pescado a la plancha</a>
-			</div>
-			<img src="noImage.jpg" alt="sinImagen">
-			<div>Segundo plato</div>
-			<div>Pescado, plancha</div>
-		</div>
-		<div class="tableBodyRow">
-			<div class="dishName">
-				<a href="dishes/4">Pollo asado</a>
-			</div>
-			<img src="https://farm4.staticflickr.com/3552/3324946746_b7fe4105dc_b.jpg" alt="pollo asado con verdura salteada">
-			<div>Segundo plato</div>
-			<div>Carne, asado</div>
-		</div>
-		<div class="tableBodyRow">
-			<div class="dishName">
-				<a href="dishes/5">Tarta de requesón</a>
-			</div>
-			<img src="noImage.jpg" alt="sinImagen">
-			<div>Postre</div>
-			<div>Frío</div>
-		</div>
-
-<!-- /TMP -->
-<!-- TODO get model data from controller
-		< % var i; for (i=0; i < dishes.length; i++) { %>
-		<div class="tableBodyRow">
-			<div class="dishName">
-				<a href="dishes/< %= dishes[i].id %>">< %= dishes[i].dish %></a>
-			</div>
-			<img src=< %= dishes[i].foto %> alt="foto" />
+			<img src="<%= dishes[i].imageSource %>" alt="<%= dishes[i].imageDescription %>" />
 			<div>
-				< %= dishes[i].Type.text %>
+				<%= dishes[i].Type.text %>
 			</div>
 			<div>
-				< %= dishes[i].Categories.text %>
+				<% for (var j = 0; j < dishes[i].Categories.length; j++) { %>
+				<%=dishes[i].Categories[j].text%><% if (j + 1 < dishes[i].Categories.length) { %>, <% } %>
+				<% } %>
 			</div>
+<!-- 
 			< % if (session.userIsManager) { %>
+-->
 			<div>
-				<a href="dishes/< %= dishes[i].id %>/edit">
-					<button>Editar</button>
+				<a href="dishes/<%= dishes[i].id %>/edit">
+					<button class="button">Editar</button>
 				</a>
 			</div>
+<!--
 			< % } %>
-		</div>
-		< % } %>
 -->
+		</div>
+		<% } %>
+<!-- -->
 	</div>
 	<script>
 		var contentRows = document.getElementsByClassName('tableBodyRow');

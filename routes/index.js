@@ -13,6 +13,9 @@ router.get('/', function(req, res) {
   res.render('index', { title: 'Gescares', errors: [] });
 });
 
+//Autoload
+router.param('dishId', dishController.load);
+
 /*
 //Session routes
 router.get('/login', sessionController.new);
@@ -27,8 +30,8 @@ router.get('/dishes', dishController.index);
 router.get('/dishes/new', dishController.new);
 router.get('/dishes/:dishId(\\d+)', dishController.show);
 router.post('/dishes/create', dishController.create);
-router.get('/dishes/edit', dishController.edit);
-router.put('/dishes/update', dishController.update);
+router.get('/dishes/:dishId(\\d+)/edit', dishController.edit);
+router.put('/dishes/:dishId(\\d+)', dishController.update);
 
 //TODO routes: session, menus, calendars
 

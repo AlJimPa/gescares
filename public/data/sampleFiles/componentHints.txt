@@ -1,0 +1,17 @@
+[
+"Pasta", 
+"Carne picada de ternera", 
+"Tomate", 
+"Polvo de setas", 
+"Nuez moscada", 
+"Orégano", 
+"Albahaca", 
+"Sal", 
+"Pollo", 
+"Limón", 
+"Tomillo", 
+"Romero", 
+"Cebolla", 
+"Puerro", 
+"Pimiento"
+]
