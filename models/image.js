@@ -3,14 +3,14 @@
 module.exports = function(sequelize, DataTypes){
 	return sequelize.define('Image', {
 		source: {
-			type: DataTypes.STRING/*,
+			type: DataTypes.TEXT/*,
 			validate: {isUrl: {
 				args: true,
 				msg: 'source URL invalid'
 			}}*/
 		},
 		link: {
-			type: DataTypes.STRING/*,
+			type: DataTypes.TEXT/*,
 			validate: {isUrl: {
 				args: true,
 				msg: 'link URL invalid'

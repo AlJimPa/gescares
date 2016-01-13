@@ -11,7 +11,10 @@ var dialect	 = (url[1]||null);
 var port	 = (url[5]||null);
 var host	 = (url[4]||null);
 var storage = appGlobals.config.dataBaseStorage;
-
+var dialectOptions = {};
+if (appGlobals.config.dataBaseUseSSL)
+	dialectOptions.ssl = true;
+	console.info('INITIALIZATING SEQUELIZE');//TODO remove or add log manager
 // Load ORM Model
 var Sequelize = require('sequelize');
 
@@ -23,6 +26,7 @@ var sequelize = new Sequelize(DB_name, user, pwd,
 	 host:     host,
 	 storage:  storage, // only SQLite (.env)
 	 omitNull: true,		// only Postgres
+	 dialectOptions: dialectOptions,
 	 define: {
 		 instanceMethods:{
 			 /** 
@@ -50,7 +54,7 @@ var sequelize = new Sequelize(DB_name, user, pwd,
 	 }
    }
 );
-
+		console.info('IMPORTING DEFINITIONS');//TODO remove
 // Import definitions
 //Type
 var typePath = path.join(__dirname, 'type');
@@ -79,7 +83,8 @@ var DishComponent = sequelize.import(dishComponentPath);
 //DishAllergenic
 var dishAllergenicPath = path.join(__dirname, 'dish_allergenic');
 var DishAllergenic = sequelize.import(dishAllergenicPath);
-// Stablish relationships
+// Define relations
+		console.info('DEFINING RELATIONS');//TODO remove
 //Type-Dish (1-N)
 Dish.belongsTo(Type, {foreignKey: {allowNull: false}, onDelete: 'CASCADE'});
 Type.hasMany(Dish);
@@ -90,17 +95,18 @@ Dish.belongsToMany(Category, {through: 'DishCategory'});
 //Dish-Price (1-N)
 Dish.hasMany(Price);
 Price.belongsTo(Dish, {foreignKey: {allowNull: false}, onDelete: 'CASCADE'});
+//Price.belongsTo(Dish, {foreignKey: {allowNull: false}, onDelete: 'CASCADE', as:{singular: 'dish', plural: 'dishes'}});
+//User.belongsToMany(Project, { as: { singular: 'task', plural: 'tasks' }}) //TODO remove
 //Dish-Image (1-N)
 Dish.hasMany(Image);
 Image.belongsTo(Dish, {foreignKey: {allowNull: false}, onDelete: 'CASCADE'});
 //Dish-DishComponent (1-N)
 Dish.hasMany(DishComponent);
-DishComponent.belongsTo(Dish, {foreignKey: {allowNull: false}, onDelete: 'CASCATE'});
-//DishComponent.belongsTo(Dish, {foreignKey: {allowNull: false}, onDelete: 'CASCATE'});
+DishComponent.belongsTo(Dish, {foreignKey: {allowNull: false}, onDelete: 'CASCADE'});
 //Dish-DishAllergenic (1-N)
 Dish.hasMany(DishAllergenic);
 DishAllergenic.belongsTo(Dish, {foreignKey: {allowNull: false}, onDelete: 'CASCADE'});
-
+		console.info('PREPARING EXPORTS');//TODO remove
 // Exports
 exports.Type = Type;
 exports.Category = Category;
@@ -115,7 +121,7 @@ exports.DishAllergenic = DishAllergenic;
 //Sequelize exports
 //exports.sequelizeTransaction = Sequelize.prototype.transaction;//doesn't work without dependencies?
 exports.resolvePromise = sequelize.Promise.resolve;
-
+		console.info('INITIALIZATING DATABASE');//TODO remove
 // Initialize database
 //returning next element's count promise and using it in the next function is a way to keep the chain without nesting
 //sample files have less than 10 rows for each model; for new tables with huge numbers of rows to be initialized, consider to use bulk operations
@@ -123,6 +129,7 @@ var fs = require('fs');
 var samplesDir = appGlobals.config.modelSamplesDir;
 
 sequelize.sync().then(function() {
+		console.info('TABLES CREATED; TYPE INSERTS');
 	Type.count().then(
 		//initial type inserts
 		function(count){
@@ -140,6 +147,7 @@ sequelize.sync().then(function() {
 	).then(
 		//initial category inserts
 		function(count){
+console.info('CATEGORY INSERTS');
 			if (count === 0){
 				var categories = JSON.parse(fs.readFileSync(samplesDir + 'categories.json', 'UTF-8'));
 				for (var category in categories){
@@ -154,6 +162,7 @@ sequelize.sync().then(function() {
 	).then(
 		//initial component inserts
 		function(count){
+console.info('COMPONENT INSERTS');
 			if (count === 0){
 				var components = JSON.parse(fs.readFileSync(samplesDir + 'componentHints.json', 'UTF-8'));
 				for (var component in components){
@@ -167,6 +176,7 @@ sequelize.sync().then(function() {
 	).then(
 		//initial allergenic inserts
 		function(count){
+console.info('ALLERGENIC INSERTS');
 			if (count === 0){
 				var allergenics = JSON.parse(fs.readFileSync(samplesDir + 'allergenicHints.json', 'UTF-8'));
 				for (var allergenic in allergenics){
@@ -180,6 +190,7 @@ sequelize.sync().then(function() {
 	).then(
 		//initial dish inserts - types required
 		function(count){
+console.info('DISH INSERTS');
 			if (count === 0){
 				var dishDataDir = samplesDir + 'dishes/';
 				var files = fs.readdirSync(dishDataDir);
@@ -199,6 +210,7 @@ sequelize.sync().then(function() {
 	).then(
 		//initial dishCategory inserts - dish and category required
 		function(count){
+console.info('DISHCATEGORY INSERTS');
 			if (count === 0){
 				var dishDataDir = samplesDir + 'dishes/';
 				var files = fs.readdirSync(dishDataDir);
@@ -219,6 +231,7 @@ sequelize.sync().then(function() {
 	).then(
 		//initial price inserts - dish required
 		function(count){
+console.info('PRICE INSERTS');
 			if (count === 0){
 				var dishDataDir = samplesDir + 'dishes/';
 				var files = fs.readdirSync(dishDataDir);
@@ -241,6 +254,7 @@ sequelize.sync().then(function() {
 	).then(
 		//initial image inserts - dish required
 		function(count){
+console.info('IMAGE INSERTS');
 			if (count === 0){
 				var dishDataDir = samplesDir + 'dishes/';
 				var files = fs.readdirSync(dishDataDir);
@@ -263,6 +277,7 @@ sequelize.sync().then(function() {
 	).then(
 		//initial dishComponent inserts - dish required
 		function(count){
+console.info('DISHCOMPONENT INSERTS');
 			if (count === 0){
 				var dishDataDir = samplesDir + 'dishes/';
 				var files = fs.readdirSync(dishDataDir);
@@ -283,6 +298,7 @@ sequelize.sync().then(function() {
 	).then(
 		//initial dishAllergenic inserts - dish required
 		function(count){
+console.info('DISHALLERGENIC INSERTS');
 			if (count === 0){
 				var dishDataDir = samplesDir + 'dishes/';
 				var files = fs.readdirSync(dishDataDir);
@@ -316,16 +332,14 @@ sequelize.sync().then(function() {
 					console.log(JSON.stringify(row));					
 				}
 			};
-			//var models = [Type, Category, Component, Allergenic, Dish, Price, Image, DishCategory, DishComponent, DishAllergenic];
-			models = [Price, DishComponent, DishAllergenic];
+			var models = [Type, Category, Component, Allergenic, Dish, Price, Image, DishCategory, DishComponent, DishAllergenic];
+			//models = [Price, DishComponent, DishAllergenic];
 			for (var index in models){
 				models[index].findAll().then(printTable);
-			} 
-		}
+			}
 */
-	).then(function(count){ 
-		return sequelize.Promise.resolve(count); }
 	).then(function(count){
-		console.log('Database initialization done');
+		console.info('Database initialization done');
 	});
 });
+

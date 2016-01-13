@@ -1,8 +1,10 @@
 .env
 load_env.sh
+logs
 node_modules
 npm-debug.log
 gescares.sqlite
+config/config.local.js
 public/images/*
 public/javascripts/touch.js
 public/javascripts/zepto.min.js

@@ -2,7 +2,7 @@ var config = module.exports = {};
 
 //host config
 config.env = 'default';
-config.port = 3000;
+config.port = process.env.PORT;
 
 //routes
 
@@ -14,3 +14,5 @@ config.useJSDeviceDetection = false; //use Javascript devide detection instead o
 //default database connection
 config.dataBaseURL = process.env.DATABASE_URL;
 config.dataBaseStorage = process.env.DATABASE_STORAGE;
+//config.dataBaseUseSSL = true; //use for local test with remote Postgres, like Heroku
+//config.dataBaseInitialSequenceId = 1000;//Add this integer to id's specified on sample data, so new elements should not have unique id exceptions (Postgresql, sequence starts at 1). TODO doesn't seem to work, remove after refactoring creation/update functions from controller and using them at database initialization

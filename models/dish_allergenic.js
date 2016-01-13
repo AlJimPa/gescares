@@ -9,7 +9,7 @@ module.exports = function(sequelize, DataTypes){
 	  DishId: { //foreign key; normally defined at models associations; needed for index
 		  type: DataTypes.INTEGER,
 		  references: {
-			  model: 'Dish',
+			  model: 'Dishes',
 			  key: 'id'
 		  }
 	  }
