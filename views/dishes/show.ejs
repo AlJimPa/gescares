@@ -2,9 +2,11 @@
 <% if (dish !== undefined && dish !== null) { %>
 	<h1><%= dish.name %></h1>
 	<div class="image">
-		<a href="<%= dish.imageLink %>" title="<%= dish.imageDescription %>">
-			<img src="<%= dish.imageSource %>" alt="<%= dish.imageDescription %>">
+		<% if (dish.Images.length > 0) { %>
+		<a href="<%= dish.Images[0].link %>" title="<%= dish.Images[0].description %>">
+			<img src="<%= dish.Images[0].source %>" alt="<%= dish.Images[0].description %>">
 		</a>
+		<% } %>
 	</div>
 	<div class="dishData">
 		<div class="dish-type"><strong>Tipo </strong><%= dish.Type.text %></div>
@@ -23,16 +25,16 @@
 		<div class="dishComponents">
 			<strong>Componentes</strong>
 			<ul>
-				<% for (var i = 0; i < dish.components.length; i++){ %>
-				<li class="tag"><%= dish.components[i] %></li>
+				<% for (var i = 0; i < dish.DishComponents.length; i++){ %>
+				<li class="tag"><%= dish.DishComponents[i].text %></li>
 				<% } %>
 			</ul>
 		</div>
 		<div class="dishAllergenics">
 			<strong>Alérgenos</strong>
 			<ul>
-				<% for (var i = 0; i < dish.allergenics.length; i++) { %>
-				<li class="tag"><%= dish.allergenics[i] %></li>
+				<% for (var i = 0; i < dish.DishAllergenics.length; i++) { %>
+				<li class="tag"><%= dish.DishAllergenics[i].text %></li>
 				<% } %>
 			</ul>
 		</div>
@@ -48,7 +50,7 @@
 		<div class="dish-gallery">
 			<strong>Galería</strong>
 			<% for (var i = 0; i < dish.Images.length; i++) { %>
-			<a href="<%= dish.Images[i].link %>" title="<%= dish.Images[i].description %>">
+			<a href="<%= dish.Images[i].link || dish.Images[i].source %>" title="<%= dish.Images[i].description %>" target="_blank">
 				<img src="<%= dish.Images[i].source %>" alt="<%= dish.Images[i].description %>">
 			</a>
 			<% } %>

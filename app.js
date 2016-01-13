@@ -1,5 +1,6 @@
-global = {};//GLOBAL variable!!!!
-global.config = require('./config');
+appGlobals = {};//GLOBAL variable!!!! 
+//do NOT use global as variable, it is used in some middlewares like sequelice!
+appGlobals.config = require('./config');
 
 var express = require('express');
 var path = require('path');

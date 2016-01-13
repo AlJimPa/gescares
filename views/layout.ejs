@@ -1,5 +1,5 @@
-<% //config. TODO move to cookies/settings file
-   var useJSDeviceDetection = false;
+<% //config
+   var useJSDeviceDetection = appGlobals.config.useJSDeviceDetection;
 %>
 <!DOCTYPE html>
 <html>
@@ -70,7 +70,9 @@
 	</section>
 	<footer class="main" id="f1">
 		<a href="https://github.com/AlJimPa/Gescares" target="_blank">Proyecto en GitHub</a>
-		<p>Configuración actual: <%= global.config.env %></p>
+		<p>Configuración actual: <%= appGlobals.config.env %></p>
+		<p><strong>Los platos incluidos por defecto, así como otros elementos, se consideran muestras. Dichas muestras pueden contener información errónea, como los componentes o alérgenos.</strong></p>
+		<p><strong>Las imágenes de muestra están sujetas a licencias Creative Commons; para ver más detalles, utilizar sus vínculos.</strong></p>
 	</footer>
   </div>
   </body>

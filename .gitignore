@@ -1,7 +1,9 @@
+.env
+load_env.sh
 node_modules
 npm-debug.log
+gescares.sqlite
 public/images/*
 public/javascripts/touch.js
 public/javascripts/zepto.min.js
 public/licenses/MIT-LICENSE_zepto
-public/data/dishes/*

@@ -1,5 +1,5 @@
 	<form method="get" action="/dishes">
-		<input type="text" name="search" />
+		<input type="text" name="search" value="<%= query !== undefined ? query : '' %>" />
         <input type="submit" value="Buscar plato" class="button" />
 		<!-- < % if (session.userIsManager) { %> -->
 	    <a href="/dishes/new"><button type="button" class="button">Crear Plato</button></a>
@@ -16,7 +16,15 @@
 			<div class="dishName">
 				<a href="dishes/<%= dishes[i].id %>"><%= dishes[i].name %></a>
 			</div>
-			<img src="<%= dishes[i].imageSource %>" alt="<%= dishes[i].imageDescription %>" />
+			<% 
+			var imageSource = '';
+			var imageDescription = 'No Image';
+			if (dishes[i].Images.length > 0){
+				imageSource = dishes[i].Images[0].source;
+				imageDescription = dishes[i].Images[0].description;
+			}
+			%>
+			<img src="<%= imageSource %>" alt="<%= imageDescription %>" />
 			<div>
 				<%= dishes[i].Type.text %>
 			</div>

@@ -1,16 +1,21 @@
 		<noscript>Esta página requiere de javascript activo para el uso de campos dinámicos y validación del formulario</noscript>
+		<% //globals needed
+			var splitSeparator = appGlobals.config.splitSeparator; 
+		%>
+		<% if (dish.id !== undefined && dish.id !== null) { %>
 		<input type="hidden" id="dishId" name="dish[id]" value="<%= dish.id %>" />
+		<% } %>
 		<label for="name" class="float">Nombre del plato:</label>
 		<input type="text" id="name" class="float" name="dish[name]" value="<%= dish.name %>" />
 		<label for="selectType" class="float">Tipo:</label>
-		<select name="dish[type]" id="selectType" class="float">
-			<% for (var t in types) { %>
-			<option value="<%= t %>"><%= types[t] %></option>
+		<select name="dish[TypeId]" id="selectType" class="float">
+			<% for (var index in types) { %>
+			<option value="<%= types[index].id %>"><%= types[index].text %></option>
 			<% } %>
 		</select>
 		<script>
-			<% if (dish.type !== undefined && dish.type !== null) { %>
-			document.getElementById("selectType").value="<%= dish.type %>";
+			<% if (dish.TypeId !== undefined && dish.TypeId !== null) { %>
+			document.getElementById("selectType").value="<%= dish.TypeId %>";
 			<% } else { %>
 			document.getElementById("selectType").value="1";
 			<% } %>
@@ -18,16 +23,24 @@
 		<label for="description" class="float-clear">Descripción:</label>
 		<input type="textArea" rows="5" cols="80" class="float"
 				id="description" name="dish[description]" value="<%= dish.description %>" />
+		<% 
+		var categoryIdArray = [];
+		if (dish.Categories instanceof (Array)){
+			for (var i = 0; i < dish.Categories.length; i++){
+				categoryIdArray.push(dish.Categories[i].DishCategory.CategoryId);
+			}
+		}
+		%>
 		<div id="div-multi-components">
 			<div class="multi-select-container">
 				<label for="selectCategories" class="block-label">Categorias</label>
 				<select name="dish[categories]" id="selectCategories" class="bordered" multiple="true">
-					<% for (var c in categories) { %>
-					<option value="<%= c %>" 
-					  <% if (dish.categories instanceof(Array) && dish.categories.indexOf(+c) !== -1) { 
+					<% for (var index in categories) { %>
+					<option value="<%= categories[index].id %>" 
+					  <% if (categoryIdArray.indexOf(categories[index].id) !== -1) { 
 				        %>selected="true"
 				      <% } %>
-				    ><%= categories[c] %></option>
+				    ><%= categories[index].text %></option>
 					<% } %>
 				</select>
 			</div>
@@ -36,8 +49,8 @@
 				<fieldset id="components" class="bordered">
 					<input list="componentList" id="componentInputList" class="multi-select-input">
 					<datalist id="componentList">
-						<% for (var c in componentHints) { %>
-						<option value="<%= componentHints[c] %>"></option>
+						<% for (var index in componentHints) { %>
+						<option value="<%= componentHints[index].text %>"></option>
 						<% } %>
 					</datalist>
 					<button type="button" class="button multi-select-add-button"
@@ -46,9 +59,14 @@
 						Añadir
 					</button>
 					<select name="dish[components]" id="selectComponents" class="multi-select-select" size="5" multiple="true">
-						<% for (var c in dish.components) { %>
-							<option value="<%= dish.components[c] %>">
-								<%= dish.components[c] %>
+						<% for (var index in dish.DishComponents) { 
+							var dishComponent = dish.DishComponents[index].text;
+							//id should be null only after errors
+							if (dish.DishComponents[index].id !== undefined)
+								dishComponent += splitSeparator + dish.DishComponents[index].id;
+							%>
+							<option value="<%= dishComponent %>">
+								<%= dish.DishComponents[index].text %>
 							</option>
 						<% } %>
 					</select>
@@ -63,8 +81,8 @@
 				<fieldset id="allergenics" class="bordered">
 					<input list="allergenicList" id="allergenicInputList" class="multi-select-input">
 					<datalist id="allergenicList">
-						<% for (var a in allergenicHints) { %>
-						<option value="<%= allergenicHints[a] %>"></option>
+						<% for (var index in allergenicHints) { %>
+						<option value="<%= allergenicHints[index].text %>"></option>
 						<% } %>
 					</datalist>
 					<button type="button" class="button multi-select-add-button"
@@ -75,9 +93,13 @@
 					</button>
 					<br>
 					<select name="dish[allergenics]" id="selectAllergenics" class="multi-select-select" size="5" multiple="true">
-						<% for (var a in dish.allergenics) { %>
-						<option value="<%= dish.allergenics[a] %>">
-							<%= dish.allergenics[a] %>
+						<% for (var index in dish.DishAllergenics) { 
+							var dishAllergenic = dish.DishAllergenics[index].text;
+							if (dish.DishAllergenics[index].id !== undefined)
+								dishAllergenic += splitSeparator + dish.DishAllergenics[index].id 
+						%>
+						<option value="<%= dishAllergenic %>">
+							<%= dish.DishAllergenics[index].text %>
 						</option>
 						<% } %>
 					</select>
@@ -102,6 +124,9 @@
 					<% if (dish.Prices instanceof Object){
 						for (var i = 0; i < dish.Prices.length; i++) { %>
 					<div class="tableBodyRow" id="pricingRow<%= i %>">
+						<% if (dish.Prices[i].id !== undefined) { %>
+						<input name="dish[Prices][<%= i %>][id]" type="hidden" value="<%= dish.Prices[i].id %>">
+						<% } %>
 						<div class="tableBodyRow">
 							<input name="dish[Prices][<%= i %>][concept]"
 								   type="text" value="<%= dish.Prices[i].concept %>">
@@ -133,7 +158,7 @@
 		<script>
 			var _prices = prices(
 				<%= ((dish.Prices instanceof Object)? dish.Prices.length : 0) %>,//pricesLength
-				'<%= global.config.defaultCurrency.toString() %>', //defaultCurrency, 
+				'<%= appGlobals.config.defaultCurrency.toString() %>', //defaultCurrency, 
 				'pricingTable' //pricingTable
 			);
 		</script>

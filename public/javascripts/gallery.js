@@ -112,6 +112,14 @@ function gallery(galleryDivTag, imagePreviewTag){
 		imgDeleteButton.setAttribute('class', 'button');
 		imgDeleteButton.appendChild(document.createTextNode('Borrar'));
 		divImage.appendChild(imgDeleteButton);
+		//divImage/spanImageFields/id - using it as last item so event listener don't need element id's
+		if (image !== undefined && image.id !== undefined){
+			var idInput = document.createElement('INPUT');
+			idInput.setAttribute('type', 'hidden');
+			idInput.setAttribute('name', 'dish[Images][' + imageNumber + '][id]');
+			idInput.value = image.id;
+			spanImageFields.appendChild(idInput);
+		}
 		//event listeners
 		addImageListeners(divImage, image !== undefined);
 		imageNumber++;
