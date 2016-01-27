@@ -1,9 +1,9 @@
-{
-"1": "Pasta", 
-"2": "Caldo", 
-"3": "Bebida", 
-"4": "Entrante", 
-"5": "Primer plato", 
-"6": "Segundo plato", 
-"7": "Postre"
-}
+[
+{"id": 1, "text": "Pasta"}, 
+{"id": 2, "text": "Caldo"}, 
+{"id": 3, "text": "Bebida"}, 
+{"id": 4, "text": "Entrante"}, 
+{"id": 5, "text": "Primer plato"}, 
+{"id": 6, "text": "Segundo plato"}, 
+{"id": 7, "text": "Postre"}
+]

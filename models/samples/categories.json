@@ -1,14 +1,14 @@
-{
-"101": "Carne", 
-"102": "Pescado", 
-"3": "Caldo", 
-"4": "Vegetariano", 
-"5": "Apto para celíacos", 
-"6": "Apto para diabéticos", 
-"7": "Pasta", 
-"8": "Arroz", 
-"9": "Plancha", 
-"10": "Asado", 
-"11": "Frío", 
-"12": "Caliente"
-}
+[
+{"id": 101, "text": "Carne"}, 
+{"id": 102, "text": "Pescado"}, 
+{"id": 3, "text": "Caldo"}, 
+{"id": 4, "text": "Vegetariano"}, 
+{"id": 5, "text": "Apto para celíacos"}, 
+{"id": 6, "text": "Apto para diabéticos"}, 
+{"id": 7, "text": "Pasta"}, 
+{"id": 8, "text": "Arroz"}, 
+{"id": 9, "text": "Plancha"}, 
+{"id": 10, "text": "Asado"}, 
+{"id": 11, "text": "Frío"}, 
+{"id": 12, "text": "Caliente"}
+]

@@ -1,6 +1,7 @@
 appGlobals = {};//GLOBAL variable!!!! 
-//do NOT use global as variable, it is used in some middlewares like sequelice!
+//do NOT use "global" as variable, it is used in some middlewares like sequelice!
 appGlobals.config = require('./config');
+appGlobals.logger = require('./logger');
 
 var express = require('express');
 var path = require('path');

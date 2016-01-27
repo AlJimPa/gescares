@@ -1,4 +1,5 @@
 var path = require('path');
+var log = appGlobals.logger.createLogger('models');
 
 // Postgres DATABASE_URL = postgres://user:passwd@host:port/database
 // SQLite	DATABASE_URL = sqlite://:@:/
@@ -14,7 +15,7 @@ var storage = appGlobals.config.dataBaseStorage;
 var dialectOptions = {};
 if (appGlobals.config.dataBaseUseSSL)
 	dialectOptions.ssl = true;
-	console.info('INITIALIZATING SEQUELIZE');//TODO remove or add log manager
+	log.info('INITIALIZATING SEQUELIZE');
 // Load ORM Model
 var Sequelize = require('sequelize');
 
@@ -54,7 +55,8 @@ var sequelize = new Sequelize(DB_name, user, pwd,
 	 }
    }
 );
-		console.info('IMPORTING DEFINITIONS');//TODO remove
+
+log.info('IMPORTING DEFINITIONS');
 // Import definitions
 //Type
 var typePath = path.join(__dirname, 'type');
@@ -83,8 +85,9 @@ var DishComponent = sequelize.import(dishComponentPath);
 //DishAllergenic
 var dishAllergenicPath = path.join(__dirname, 'dish_allergenic');
 var DishAllergenic = sequelize.import(dishAllergenicPath);
+
 // Define relations
-		console.info('DEFINING RELATIONS');//TODO remove
+log.info('DEFINING RELATIONS');
 //Type-Dish (1-N)
 Dish.belongsTo(Type, {foreignKey: {allowNull: false}, onDelete: 'CASCADE'});
 Type.hasMany(Dish);
@@ -106,7 +109,8 @@ DishComponent.belongsTo(Dish, {foreignKey: {allowNull: false}, onDelete: 'CASCAD
 //Dish-DishAllergenic (1-N)
 Dish.hasMany(DishAllergenic);
 DishAllergenic.belongsTo(Dish, {foreignKey: {allowNull: false}, onDelete: 'CASCADE'});
-		console.info('PREPARING EXPORTS');//TODO remove
+
+log.info('PREPARING EXPORTS');
 // Exports
 exports.Type = Type;
 exports.Category = Category;
@@ -121,24 +125,29 @@ exports.DishAllergenic = DishAllergenic;
 //Sequelize exports
 //exports.sequelizeTransaction = Sequelize.prototype.transaction;//doesn't work without dependencies?
 exports.resolvePromise = sequelize.Promise.resolve;
-		console.info('INITIALIZATING DATABASE');//TODO remove
+
 // Initialize database
+log.info('INITIALIZATING DATABASE');
 //returning next element's count promise and using it in the next function is a way to keep the chain without nesting
 //sample files have less than 10 rows for each model; for new tables with huge numbers of rows to be initialized, consider to use bulk operations
 var fs = require('fs');
 var samplesDir = appGlobals.config.modelSamplesDir;
+var initialSequenceId = appGlobals.config.dataBaseInitialSequenceId;
+var insertTotals = {};
 
 sequelize.sync().then(function() {
-		console.info('TABLES CREATED; TYPE INSERTS');
+	log.info('TABLES CREATED; LOADING SAMPLE DATA IF NEEDED');
 	Type.count().then(
 		//initial type inserts
 		function(count){
+			log.debug('-Type');
 			if (count === 0){
 				var types = JSON.parse(fs.readFileSync(samplesDir + 'types.json', 'UTF-8'));
-				for (var type in types){
+				insertTotals.Types = types.length;
+				for (var index in types){
 					Type.create({
-						id: type,
-						text: types[type]
+						id: types[index].id + initialSequenceId,
+						text: types[index].text
 					});
 				}
 			}
@@ -147,13 +156,14 @@ sequelize.sync().then(function() {
 	).then(
 		//initial category inserts
 		function(count){
-console.info('CATEGORY INSERTS');
+			log.debug('-Category');
 			if (count === 0){
 				var categories = JSON.parse(fs.readFileSync(samplesDir + 'categories.json', 'UTF-8'));
-				for (var category in categories){
+				insertTotals.Categories = categories.length;
+				for (var index in categories){
 					Category.create({
-						id: category,
-						text: categories[category]
+						id: categories[index].id + initialSequenceId,
+						text: categories[index].text
 					});
 				}
 			}
@@ -162,9 +172,10 @@ console.info('CATEGORY INSERTS');
 	).then(
 		//initial component inserts
 		function(count){
-console.info('COMPONENT INSERTS');
+			log.debug('-Component');
 			if (count === 0){
 				var components = JSON.parse(fs.readFileSync(samplesDir + 'componentHints.json', 'UTF-8'));
+				insertTotals.Components = components.length;
 				for (var component in components){
 					Component.create({
 						text: components[component]
@@ -176,9 +187,10 @@ console.info('COMPONENT INSERTS');
 	).then(
 		//initial allergenic inserts
 		function(count){
-console.info('ALLERGENIC INSERTS');
+			log.debug('-Allergenic');
 			if (count === 0){
 				var allergenics = JSON.parse(fs.readFileSync(samplesDir + 'allergenicHints.json', 'UTF-8'));
+				insertTotals.Allergenics = allergenics.length;
 				for (var allergenic in allergenics){
 					Allergenic.create({
 						text: allergenics[allergenic]
@@ -190,18 +202,19 @@ console.info('ALLERGENIC INSERTS');
 	).then(
 		//initial dish inserts - types required
 		function(count){
-console.info('DISH INSERTS');
+			log.debug('-Dish');
 			if (count === 0){
 				var dishDataDir = samplesDir + 'dishes/';
 				var files = fs.readdirSync(dishDataDir);
+				insertTotals.Dishes = files.length;
 				for (var i = 0; i < files.length; i++){
 					var data = fs.readFileSync(dishDataDir + files[i], 'UTF-8');
 					dish = JSON.parse(data);
 					Dish.create({
-						id: dish.id,
+						id: dish.id + initialSequenceId,
 						name: dish.name,
 						description: dish.description,
-						TypeId: dish.type //FK
+						TypeId: dish.type + initialSequenceId//FK
 					});
 				}
 			}
@@ -210,126 +223,148 @@ console.info('DISH INSERTS');
 	).then(
 		//initial dishCategory inserts - dish and category required
 		function(count){
-console.info('DISHCATEGORY INSERTS');
+			log.debug('-DishCategory');
 			if (count === 0){
+				var total = 0;
 				var dishDataDir = samplesDir + 'dishes/';
 				var files = fs.readdirSync(dishDataDir);
 				for (var i = 0; i < files.length; i++){
 					var data = fs.readFileSync(dishDataDir + files[i], 'UTF-8');
 					dish = JSON.parse(data);
 					if (dish.categories === undefined) { continue };
+					total += dish.categories.length;
 					for (var j = 0; j < dish.categories.length; j++){
 						DishCategory.create({
-							DishId: dish.id,
-							CategoryId: dish.categories[j]
+							DishId: dish.id + initialSequenceId,
+							CategoryId: dish.categories[j] + initialSequenceId
 						});
 					}
 				}
+				insertTotals.DishCategories = total;
 			}
 			return Price.count();
 		}
 	).then(
 		//initial price inserts - dish required
 		function(count){
-console.info('PRICE INSERTS');
+			log.debug('-Price');
 			if (count === 0){
+				var total = 0;
 				var dishDataDir = samplesDir + 'dishes/';
 				var files = fs.readdirSync(dishDataDir);
 				for (var i = 0; i < files.length; i++){
 					var data = fs.readFileSync(dishDataDir + files[i], 'UTF-8');
 					dish = JSON.parse(data);
 					if (dish.Prices === undefined) { continue };
+					total += dish.Prices.length;
 					for (var j = 0; j < dish.Prices.length; j++){
 						Price.create({
 							concept: dish.Prices[j].concept,
 							price: dish.Prices[j].price,
 							currency: dish.Prices[j].currency,
-							DishId: dish.id
+							DishId: dish.id + initialSequenceId
 						});
 					}
 				}
+				insertTotals.Prices = total;
 			}
 			return Image.count();
 		}
 	).then(
 		//initial image inserts - dish required
 		function(count){
-console.info('IMAGE INSERTS');
+			log.debug('-Image');
 			if (count === 0){
+				var total = 0;
 				var dishDataDir = samplesDir + 'dishes/';
 				var files = fs.readdirSync(dishDataDir);
 				for (var i = 0; i < files.length; i++){
 					var data = fs.readFileSync(dishDataDir + files[i], 'UTF-8');
 					dish = JSON.parse(data);
 					if (dish.Images === undefined) { continue };
+					total += dish.Images.length;
 					for (var j = 0; j < dish.Images.length; j++){
 						Image.create({
 							source: dish.Images[j].source,
 							link: dish.Images[j].link,
 							description: dish.Images[j].description,
-							DishId: dish.id
+							DishId: dish.id + initialSequenceId
 						});
 					}
 				}
+				insertTotals.Images = total;
 			}
 			return DishComponent.count();
 		}
 	).then(
 		//initial dishComponent inserts - dish required
 		function(count){
-console.info('DISHCOMPONENT INSERTS');
+			log.debug('-DishComponent');
 			if (count === 0){
+				var total = 0;
 				var dishDataDir = samplesDir + 'dishes/';
 				var files = fs.readdirSync(dishDataDir);
 				for (var i = 0; i < files.length; i++){
 					var data = fs.readFileSync(dishDataDir + files[i], 'UTF-8');
 					dish = JSON.parse(data);
 					if (dish.Components === undefined) { continue };
+					total += dish.Components.length;
 					for (var index in dish.Components){
 						DishComponent.create({
 							text: dish.Components[index],
-							DishId: dish.id
+							DishId: dish.id + initialSequenceId
 						});
 					}
 				}
+				insertTotals.DishComponents = total;
 			}
 			return DishAllergenic.count();
 		}
 	).then(
 		//initial dishAllergenic inserts - dish required
 		function(count){
-console.info('DISHALLERGENIC INSERTS');
+			log.debug('-DishAllergenic');
 			if (count === 0){
+				total = 0;
 				var dishDataDir = samplesDir + 'dishes/';
 				var files = fs.readdirSync(dishDataDir);
 				for (var i = 0; i < files.length; i++){
 					var data = fs.readFileSync(dishDataDir + files[i], 'UTF-8');
 					dish = JSON.parse(data);
 					if (dish.Allergenics === undefined) { continue };
+					total += dish.Allergenics.length;
 					for (var index in dish.Allergenics){
 						DishAllergenic.create({
 							text: dish.Allergenics[index],
-							DishId: dish.id
+							DishId: dish.id + initialSequenceId
 						});
 					}
 				}
+				insertTotals.DishAllergenics = total;
 			}
 			return DishAllergenic.count();			
 		}
-	//DEBUG - check data 
-/*
 	).then(	
 		function(count){
+			/*
+			//DEBUG - check data 
 			function printTable(tableRows){
 				if (tableRows.length === 0)
 					return;
-				console.log('[Model: ' + tableRows[0].Model.tableName + ']');
+				var tableName = tableRows[0].Model.tableName;
+				var insertDetail = '';
+				if (insertTotals[tableName] !== undefined){
+					insertDetail += ' inserted '
+						+ tableRows.length + '/' + insertTotals[tableName];
+				}
+					
+				log.debug('[Model: ' + tableName + insertDetail + ']');
 				for (var i = 0; i < tableRows.length; i++){
 					var strRow = JSON.stringify(tableRows[i]);
 					var row = JSON.parse(strRow);
 					delete row.createdAt;
 					delete row.updatedAt;
-					console.log(JSON.stringify(row));					
+					log.debug(JSON.stringify(row));					
 				}
 			};
 			var models = [Type, Category, Component, Allergenic, Dish, Price, Image, DishCategory, DishComponent, DishAllergenic];
@@ -337,9 +372,9 @@ console.info('DISHALLERGENIC INSERTS');
 			for (var index in models){
 				models[index].findAll().then(printTable);
 			}
-*/
-	).then(function(count){
-		console.info('Database initialization done');
+			//END DEBUG
+			/**/
+			log.notice('Database initialization done');
 	});
 });
 
