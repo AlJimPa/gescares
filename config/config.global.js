@@ -14,11 +14,12 @@ config.useJSDeviceDetection = false; //use Javascript devide detection instead o
 
 //database connection
 config.dataBaseURL = process.env.DATABASE_URL;
-config.dataBaseStorage = process.env.DATABASE_STORAGE;
+config.dataBaseStorage = process.env.DATABASE_STORAGE; //filename for Sqlite database
 //config.dataBaseUseSSL = true; //use for local test with remote Postgres, like Heroku
 config.dataBaseInitialSequenceId = 1000;//Add this integer to id's specified on sample data, so new elements should not have unique id exceptions (Postgresql, sequence starts at 1)
 
 //logger - morgan is used for http request at app.js; this section refer to controller/model
+ //log levels available: EMERGENCY, ALERT, CRITICAL, ERROR, WARNING, NOTICE, INFO, DEBUG
 config.logLevel = 'notice' || process.env.LOG_LEVEL;
 //config.consoleLogLevel = 'info' || process.env.CONSOLE_LOG_LEVEL;
 //config.consoleWriteTimestamp = false; //set false if timestamps are added somewhere else (heroku, foreman command); true otherwise (like local tests)

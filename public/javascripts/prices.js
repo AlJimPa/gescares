@@ -29,14 +29,11 @@ function prices(pricesLength, defaultCurrency, pricingTable){
 	}
 
 	function addPricingRow(){
-		//var pricingTable = document.getElementById('pricingTable');
 		var tableBodyRowDiv = document.createElement('DIV');
 		tableBodyRowDiv.id = 'pricingRow' + priceRowNumber;
 		tableBodyRowDiv.setAttribute('class', 'tableBodyRow');
 		pricingTable.appendChild(tableBodyRowDiv);
 		var strPrice = 'dish[Prices][' + priceRowNumber + ']';
-		/* //TODO hidden attribute for updates (contains DB id); null on new?
-		*/
 		//conceptInput
 		var conceptInput = document.createElement('INPUT');
 		conceptInput.setAttribute('type', 'text');

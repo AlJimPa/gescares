@@ -8,7 +8,7 @@
 "categories":[101,10],
 "description":"Pollo asado en un asador rotatorio acompañado de verdura salteada",
 "Components":["Pollo","Limón","Tomillo","Romero","Cebolla","Puerro","Pimiento"],
-"Allergenics":["Tomillo"],
+"Allergenics":[],
 "Prices":[{"concept":"Base","price":"12.45","currency":"EUR"},{"concept":"Guarnición de patatas","price":"+0.95","currency":"EUR"}],
 "Images":[{"link":"https://www.flickr.com/photos/xurde/3324946746/in/photolist-64PdQ3-bzSFax-bzSF5x-bmXQmu-bYHTB7-3KuSy-3KuS9-For9C-j52gDm-5re19j-64PbDb-6b55qT-7s277X-aVrqWR-6tTBpo-5CrLG6-4Lz3TV-4Lz3gX-2Rpgas-6tPsuH-5wUqBo-3ivLu4-ForKr-For8Q-5XjuEZ-71j8Je-7k3WLm-6AgGnz-5nw26N-qGHNJe-qZ9FHH-bpu6tb-bpu6Kd-56LkSw-5wR4A4-5nT6ZB-5QWYwn-6KXm6w-7uBEy2-4nQ5ZZ-tkxBr-611Y4y-5ZWKuX-5ZWKEc-5ZWKmF-6PtBGH-nWqnN-6A835P-6JtQkY-7v8GaL","description":"pollo asado con verdura salteada","source":"https://farm4.staticflickr.com/3552/3324946746_b7fe4105dc_b.jpg"}]
 }

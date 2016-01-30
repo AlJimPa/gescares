@@ -34,6 +34,8 @@ router.get('/dishes/:dishId(\\d+)/edit', dishController.edit);
 router.put('/dishes/:dishId(\\d+)', dishController.update);
 
 //TODO routes: session, menus, calendars
-
+router.get('/credits', function(req, res){
+	res.render('credits', {errors:[]});
+});
 
 module.exports = router;

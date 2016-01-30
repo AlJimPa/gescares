@@ -15,7 +15,7 @@ var storage = appGlobals.config.dataBaseStorage;
 var dialectOptions = {};
 if (appGlobals.config.dataBaseUseSSL)
 	dialectOptions.ssl = true;
-	log.info('INITIALIZATING SEQUELIZE');
+log.info('INITIALIZATING SEQUELIZE');
 // Load ORM Model
 var Sequelize = require('sequelize');
 
@@ -98,8 +98,6 @@ Dish.belongsToMany(Category, {through: 'DishCategory'});
 //Dish-Price (1-N)
 Dish.hasMany(Price);
 Price.belongsTo(Dish, {foreignKey: {allowNull: false}, onDelete: 'CASCADE'});
-//Price.belongsTo(Dish, {foreignKey: {allowNull: false}, onDelete: 'CASCADE', as:{singular: 'dish', plural: 'dishes'}});
-//User.belongsToMany(Project, { as: { singular: 'task', plural: 'tasks' }}) //TODO remove
 //Dish-Image (1-N)
 Dish.hasMany(Image);
 Image.belongsTo(Dish, {foreignKey: {allowNull: false}, onDelete: 'CASCADE'});

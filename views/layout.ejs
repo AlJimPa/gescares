@@ -31,15 +31,9 @@
 	</script>
 <% } else { %>
 	<!-- load tablet.CSS suposing tablet resolution is lower or equal than 800x480-->
-<!-- -->
     <link rel="stylesheet" type="text/css" 
 		media="only screen and (min-width: 530px) and (min-device-width: 481px) and (max-device-width: 800px)"
 		href="/stylesheets/tablet.css" />
-<!-- TODO remove and uncomment previous section; this is for test purposes only
-<link rel="stylesheet" type="text/css" 
-		media="only screen and (min-width: 530px) and (min-device-width: 481px)" 
-		href="/stylesheets/tablet.css" />
--->
 <% } %>
   </head>
   <body>
@@ -56,6 +50,7 @@
 		<span><a href="/dishes" >Gestión de platos</a></span>
 		<span><a href="/menus" >Gestión de menús</a></span>
 		<span><a href="/calendars" >Gestión de calendarios</a></span>
+		<span><a href="/credits" >Créditos</a></span>
 	</nav>
 	<section class="main" id="s1">
 		<% if (typeof errors !== 'undefined' && errors.length) { %>
@@ -68,8 +63,9 @@
 		<% } %>
 		<%- body %>
 	</section>
+	<hr />
 	<footer class="main" id="f1">
-		<a href="https://github.com/AlJimPa/Gescares" target="_blank">Proyecto en GitHub</a>
+		<a href="https://github.com/AlJimPa/gescares" target="_blank">Proyecto en GitHub</a>
 		<p>Configuración actual: <%= appGlobals.config.env %></p>
 		<p><strong>Los platos incluidos por defecto, así como otros elementos, se consideran muestras. Dichas muestras pueden contener información errónea, como los componentes o alérgenos.</strong></p>
 		<p><strong>Las imágenes de muestra están sujetas a licencias Creative Commons; para ver más detalles, utilizar sus vínculos.</strong></p>
